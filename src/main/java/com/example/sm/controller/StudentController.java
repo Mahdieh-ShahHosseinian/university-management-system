@@ -95,7 +95,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
 
     private void addOptionalLinks(Student student) {
 
-        Link link = linkTo(StudentController.class).slash((student.getStudentId())).slash("takeCourse").withRel("student-takeCourse");
+        Link link = linkTo(StudentController.class).slash((student.getStudentId())).slash("takeCourse?cId=").withRel("student-takeCourse");
         student.add(link);
         link = linkTo(StudentController.class).slash((student.getStudentId())).slash("getAverage").withRel("student-getAverage");
         student.add(link);
