@@ -115,7 +115,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
         professor.add(link);
         link = linkTo(methodOn(ProfessorController.class).getStudents(professor.getPersonnelId())).withRel("professor-students");
         professor.add(link);
-        link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("updateStudentGrade").withRel("professor-updateStudentGrade");
+        link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("updateStudentGrade?cId=&sId=&grade=").withRel("professor-updateStudentGrade");
         professor.add(link);
         link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("studentsAverage").withRel("professor-studentsAverage");
         professor.add(link);
