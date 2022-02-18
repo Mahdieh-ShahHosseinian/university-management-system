@@ -3,6 +3,7 @@ package com.example.sm.service;
 import java.util.List;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,10 @@ import com.example.sm.model.Faculty;
 import com.example.sm.model.Professor;
 
 @Service
+@AllArgsConstructor
 public class CourseService implements ServiceInterface<Course> {
 
-    @Autowired
     private CourseRepository repository;
-
 
     @Override
     public Course save(Course course) {
@@ -48,7 +48,6 @@ public class CourseService implements ServiceInterface<Course> {
     public void delete(int id) {
         repository.deleteById(id);
     }
-
 
     public Set<Course> findByFaculty(Faculty faculty) {
         return repository.findByFaculty(faculty);
