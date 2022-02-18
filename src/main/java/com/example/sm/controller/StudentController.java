@@ -7,9 +7,10 @@ import com.example.sm.model.Student;
 import com.example.sm.service.CourseService;
 import com.example.sm.service.StudentCourseService;
 import com.example.sm.service.StudentService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,23 +20,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/students")
+@AllArgsConstructor
 public class StudentController implements ControllerInterface<Student, StudentDTO> {
 
-    @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
     private StudentService studentService;
-
-    @Autowired
     private CourseService courseService;
-
-    @Autowired
     private StudentCourseService studentCourseService;
-
 
     @Override
     @PostMapping
+    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public Student save(@Valid @RequestBody StudentDTO studentDto) {
 
         Student student = modelMapper.map(studentDto, Student.class);
@@ -47,6 +42,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
 
     @Override
     @GetMapping("/getAll")
+    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public List<Student> getAll() {
 
         List<Student> students = studentService.getAll();
@@ -59,6 +55,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
 
     @Override
     @GetMapping("/{id}")
+    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.STUDENT)" + "and @UserSecurity.hasUserId(authentication, #id)")
     public Student get(@PathVariable int id) {
 
         Student student = studentService.get(id);
@@ -69,6 +66,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
 
     @Override
     @PutMapping("{id}")
+    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.STUDENT)" + "and @UserSecurity.hasUserId(authentication, #id)")
     public Student update(@Valid @RequestBody StudentDTO studentDto, @PathVariable("id") int id) {
 
         Student student = modelMapper.map(studentDto, Student.class);
@@ -83,6 +81,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
 
     @Override
     @DeleteMapping("{id}")
+    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
     public void delete(@PathVariable("id") int id) {
         studentService.delete(id);
     }
@@ -102,6 +101,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
     }
 
     @PutMapping("/{id}/takeCourse")
+    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.STUDENT)" + "and @UserSecurity.hasUserId(authentication, #id)")
     public Course selectCourse(@PathVariable("id") int id, @RequestParam("cId") int courseId) {
 
         if (courseService.get(courseId) == null) {
@@ -111,6 +111,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
     }
 
     @GetMapping("/{id}/getAverage")
+    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.STUDENT)" + "and @UserSecurity.hasUserId(authentication, #id)")
     public double getAverage(@PathVariable("id") int id) {
         return studentService.calculateAverage(id);
     }
