@@ -2,7 +2,8 @@ package com.example.sm.service;
 
 import com.example.sm.dao.ProfessorRepository;
 import com.example.sm.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -10,14 +11,17 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class ProfessorService implements ServiceInterface<Professor> {
 
-    @Autowired
     private ProfessorRepository repository;
-
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Professor save(Professor professor) {
+
+        String encodedPass = bCryptPasswordEncoder.encode(professor.getPassword());
+        professor.setPassword(encodedPass);
         return repository.save(professor);
     }
 
@@ -61,7 +65,7 @@ public class ProfessorService implements ServiceInterface<Professor> {
 
             Set<StudentCourse> studentCourses = course.getStudentCourses();
             for (StudentCourse sc : studentCourses) {
-                students.add(sc.getStudent());
+                students.add(sc.getStudentCourseId().getStudent());
             }
         }
         return students;
@@ -74,8 +78,8 @@ public class ProfessorService implements ServiceInterface<Professor> {
         for (Student student : students) {
             for (StudentCourse sc : student.getStudentCourses()) {
 
-                totalAverage += sc.getGrade() * sc.getCourse().getUnit();
-                totalUnits += sc.getCourse().getUnit();
+                totalAverage += sc.getGrade() * sc.getStudentCourseId().getCourse().getUnit();
+                totalUnits += sc.getStudentCourseId().getCourse().getUnit();
             }
         }
 
