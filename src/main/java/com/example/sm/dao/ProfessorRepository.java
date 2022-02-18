@@ -10,5 +10,6 @@ import java.util.Set;
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
 
+    Professor findByUsername(String username);
     Set<Professor> findByFaculty(Faculty faculty);
 }
