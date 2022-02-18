@@ -1,5 +1,8 @@
 package com.example.sm.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
@@ -9,9 +12,13 @@ public class StudentCourseId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Getter
+    @Setter
     @ManyToOne
     private Student student;
 
+    @Getter
+    @Setter
     @ManyToOne
     private Course course;
 
@@ -32,23 +39,5 @@ public class StudentCourseId implements Serializable {
     @Override
     public int hashCode() {
         return super.hashCode();
-    }
-
-    // Setter & Getter
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
     }
 }
