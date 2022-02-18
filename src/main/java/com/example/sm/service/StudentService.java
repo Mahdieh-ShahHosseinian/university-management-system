@@ -4,21 +4,25 @@ import com.example.sm.dao.StudentRepository;
 import com.example.sm.model.Faculty;
 import com.example.sm.model.Student;
 import com.example.sm.model.StudentCourse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class StudentService implements ServiceInterface<Student> {
 
-    @Autowired
     private StudentRepository repository;
-
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Student save(Student student) {
+
+        String encodedPass = bCryptPasswordEncoder.encode(student.getPassword());
+        student.setPassword(encodedPass);
         return repository.save(student);
     }
 
@@ -48,7 +52,6 @@ public class StudentService implements ServiceInterface<Student> {
         repository.deleteById(id);
     }
 
-
     public Set<Student> findByFaculty(Faculty faculty) {
         return repository.findByFaculty(faculty);
     }
@@ -60,8 +63,8 @@ public class StudentService implements ServiceInterface<Student> {
         int totalUnits = 0;
         for (StudentCourse sc : student.getStudentCourses()) {
 
-            totalAverage += sc.getGrade() * sc.getCourse().getUnit();
-            totalUnits += sc.getCourse().getUnit();
+            totalAverage += sc.getGrade() * sc.getStudentCourseId().getCourse().getUnit();
+            totalUnits += sc.getStudentCourseId().getCourse().getUnit();
         }
         return totalAverage / totalUnits;
     }
