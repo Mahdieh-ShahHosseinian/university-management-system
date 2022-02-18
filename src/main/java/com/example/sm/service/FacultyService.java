@@ -2,17 +2,17 @@ package com.example.sm.service;
 
 import com.example.sm.dao.FacultyRepository;
 import com.example.sm.model.Faculty;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class FacultyService implements ServiceInterface<Faculty> {
 
-    @Autowired
     private FacultyRepository repository;
-
 
     @Override
     public Faculty save(Faculty faculty) {
