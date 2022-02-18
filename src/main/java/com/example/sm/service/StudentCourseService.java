@@ -2,6 +2,7 @@ package com.example.sm.service;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,10 @@ import com.example.sm.model.StudentCourse;
 import com.example.sm.model.StudentCourseId;
 
 @Service
+@AllArgsConstructor
 public class StudentCourseService {
 
-    @Autowired
     private StudentCourseRepository repository;
-
 
     public StudentCourse save(Student student, Course course) {
 
@@ -55,6 +55,6 @@ public class StudentCourseService {
     public Course addCourse(Student student, Course course) {
 
         StudentCourse studentCourse = new StudentCourse(student, course);
-        return repository.save(studentCourse).getCourse();
+        return repository.save(studentCourse).getStudentCourseId().getCourse();
     }
 }
