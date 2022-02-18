@@ -1,6 +1,8 @@
 package com.example.sm.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -12,22 +14,33 @@ public class Course extends RepresentationModel<Course> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Getter
+    @Setter
     @Column(unique = true, nullable = false)
     private int id;
 
+    @Getter
+    @Setter
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
+    @Getter
+    @Setter
     @Column(nullable = false, length = 1)
     private int unit;
 
+    @Getter
+    @Setter
     @ManyToOne
     private Professor professor;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "studentCourseId.course", fetch = FetchType.EAGER)
     private Set<StudentCourse> studentCourses;
 
+    @Getter
+    @Setter
     @ManyToOne
     private Faculty faculty;
 
@@ -38,55 +51,5 @@ public class Course extends RepresentationModel<Course> {
         if (obj instanceof Course) course = (Course) obj;
         assert course != null;
         return id == course.getId();
-    }
-
-    // Setter & Getter
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getUnit() {
-        return unit;
-    }
-
-    public void setUnit(int unit) {
-        this.unit = unit;
-    }
-
-    public Professor getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
-    public Set<StudentCourse> getStudentCourses() {
-        return studentCourses;
-    }
-
-    public void setStudentCourses(Set<StudentCourse> studentCourses) {
-        this.studentCourses = studentCourses;
-    }
-
-    public Faculty getFaculty() {
-        return faculty;
-    }
-
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
     }
 }
