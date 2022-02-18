@@ -1,58 +1,46 @@
 package com.example.sm.dto;
 
+import com.example.sm.model.Faculty;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Range;
-
-import com.example.sm.model.Faculty;
-
 public class ProfessorDTO {
 
+    @Getter
+    @Setter
 //	@Range(min = 9, max = 10, message = "nationalId should be 10 numbers") TODO
-	private long nationalId;
+    private long nationalId;
 
-	@NotEmpty(message = "firstName must not be empty")
-	@Size(min = 2, max = 15)
-	private String firstName;
+    @Getter
+    @Setter
+    @NotEmpty(message = "firstName must not be empty")
+    @Size(min = 2, max = 15)
+    private String firstName;
 
-	@NotEmpty(message = "lastName must not be empty")
-	@Size(min = 2, max = 15)
-	private String lastName;
+    @Getter
+    @Setter
+    @NotEmpty(message = "lastName must not be empty")
+    @Size(min = 2, max = 15)
+    private String lastName;
 
-	@NotNull(message = "faculty cannot be null")
-	private Faculty faculty;
+    @Getter
+    @Setter
+    @NotEmpty(message = "firstName must not be empty")
+    @Size(min = 4, max = 15)
+    private String username;
 
-	public long getNationalId() {
-		return nationalId;
-	}
+    @Getter
+    @Setter
+    @NotEmpty(message = "firstName must not be empty")
+    @Size(min = 6, max = 15)
+    private String password;
 
-	public void setNationalId(long nationalId) {
-		this.nationalId = nationalId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public Faculty getFaculty() {
-		return faculty;
-	}
-
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
-	}
+    @Getter
+    @Setter
+    @NotNull(message = "faculty cannot be null")
+    private Faculty faculty;
 }
