@@ -1,7 +1,7 @@
 package com.example.sm.security;
 
 import com.example.sm.controller.Roles;
-import com.example.sm.model.User;
+import com.example.sm.model.ApplicationUser;
 import com.example.sm.service.ManagerService;
 import com.example.sm.service.ProfessorService;
 import com.example.sm.service.StudentService;
@@ -26,21 +26,21 @@ public class UserSecurity {
         String role = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()).get(0);
 
-        User user = null;
+        ApplicationUser applicationUser = null;
         switch (role) {
             case Roles.MANAGER:
-                user = managerService.get(id);
+                applicationUser = managerService.get(id);
                 break;
             case Roles.PROFESSOR:
-                user = professorService.get(id);
+                applicationUser = professorService.get(id);
                 break;
             case Roles.STUDENT:
-                user = studentService.get(id);
+                applicationUser = studentService.get(id);
                 break;
         }
 
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-        assert user != null;
-        return user.getUsername().equals(userPrincipal.getUsername());
+        assert applicationUser != null;
+        return applicationUser.getUsername().equals(userPrincipal.getUsername());
     }
 }
