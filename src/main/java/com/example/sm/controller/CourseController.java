@@ -17,7 +17,8 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
+@PreAuthorize("hasRole('ROLE_MANAGER')")
 @AllArgsConstructor
 public class CourseController implements ControllerInterface<Course, CourseDTO> {
 
@@ -26,7 +27,6 @@ public class CourseController implements ControllerInterface<Course, CourseDTO> 
 
     @Override
     @PostMapping
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public Course save(@Valid @RequestBody CourseDTO courseDto) {
 
         Course course = modelMapper.map(courseDto, Course.class);
@@ -38,7 +38,6 @@ public class CourseController implements ControllerInterface<Course, CourseDTO> 
 
     @Override
     @GetMapping("/getAll")
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public List<Course> getAll() {
 
         List<Course> courses = courseService.getAll();
@@ -50,7 +49,6 @@ public class CourseController implements ControllerInterface<Course, CourseDTO> 
 
     @Override
     @GetMapping("/{id}")
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public Course get(@PathVariable int id) {
 
         Course course = courseService.get(id);
@@ -60,7 +58,6 @@ public class CourseController implements ControllerInterface<Course, CourseDTO> 
 
     @Override
     @PutMapping("{id}")
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public Course update(@Valid @RequestBody CourseDTO courseDto, @PathVariable int id) {
 
         Course course = modelMapper.map(courseDto, Course.class);
@@ -74,7 +71,6 @@ public class CourseController implements ControllerInterface<Course, CourseDTO> 
 
     @Override
     @DeleteMapping("{id}")
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
     public void delete(@PathVariable("id") int id) {
 
         if (courseService.get(id) == null) {

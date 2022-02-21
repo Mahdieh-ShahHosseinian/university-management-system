@@ -22,7 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/faculties")
+@RequestMapping("/api/faculties")
 @AllArgsConstructor
 public class FacultyController implements ControllerInterface<Faculty, FacultyDTO> {
 
@@ -31,7 +31,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
 
     @Override
     @PostMapping
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAuthority('faculty:write')")
     public Faculty save(@Valid @RequestBody FacultyDTO facultyDto) {
 
         Faculty faculty = modelMapper.map(facultyDto, Faculty.class);
@@ -43,7 +43,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
 
     @Override
     @GetMapping("/getAll")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Faculty> getAll() {
 
         List<Faculty> faculties = facultyService.getAll();
@@ -56,7 +56,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
 
     @Override
     @GetMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('faculty:read')")
     public Faculty get(@PathVariable("id") int id) {
 
         Faculty faculty = facultyService.get(id);
@@ -67,7 +67,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
 
     @Override
     @PutMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('faculty:write')")
     public Faculty update(@Valid @RequestBody FacultyDTO facultyDto, @PathVariable("id") int id) {
 
         Faculty faculty = modelMapper.map(facultyDto, Faculty.class);
@@ -82,7 +82,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
 
     @Override
     @DeleteMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('faculty:write')")
     public void delete(@PathVariable("id") int id) {
 
         if (facultyService.get(id) == null) {
@@ -108,7 +108,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
     }
 
     @GetMapping("/{id}/courses")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('faculty:read')")
     public Set<Course> getCourses(@PathVariable("id") int id) {
 
         Faculty faculty = facultyService.get(id);
@@ -131,7 +131,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
     }
 
     @GetMapping("/{id}/professors")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('faculty:read')")
     public Set<Professor> getProfessors(@PathVariable("id") int id) {
 
         Faculty faculty = facultyService.get(id);
@@ -151,7 +151,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
     }
 
     @GetMapping("/{id}/students")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('faculty:read')")
     public Set<Student> getStudents(@PathVariable("id") int id) {
 
         Faculty faculty = facultyService.get(id);

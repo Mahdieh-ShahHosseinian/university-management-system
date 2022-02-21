@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/professors")
+@RequestMapping("/api/professors")
 @AllArgsConstructor
 public class ProfessorController implements ControllerInterface<Professor, ProfessorDTO> {
 
@@ -38,7 +38,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
 
     @Override
     @PostMapping
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('professor:write')")
     public Professor save(@Valid @RequestBody ProfessorDTO professorDto) {
 
         Professor professor = modelMapper.map(professorDto, Professor.class);
@@ -51,7 +51,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
 
     @Override
     @GetMapping("/getAll")
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Professor> getAll() {
 
         List<Professor> professors = professorService.getAll();
@@ -64,7 +64,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
 
     @Override
     @GetMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.PROFESSOR)" + "and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
     public Professor get(@PathVariable int id) {
 
         Professor professor = professorService.get(id);
@@ -75,7 +75,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
 
     @Override
     @PutMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.PROFESSOR)" + "and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasAnyAuthority('professor:write') and @UserSecurity.hasUserId(authentication, #id)")
     public Professor update(@Valid @RequestBody ProfessorDTO professorDto, @PathVariable("id") int id) {
 
         Professor professor = modelMapper.map(professorDto, Professor.class);
@@ -90,7 +90,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
 
     @Override
     @DeleteMapping("/{id}")
-    @PreAuthorize(value = "hasAuthority(@Roles.MANAGER)")
+    @PreAuthorize("hasAnyAuthority('professor:write')")
     public void delete(@PathVariable("id") int id) {
 
         if (professorService.get(id) == null) {
@@ -121,7 +121,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @GetMapping("/{id}/courses")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.PROFESSOR)" + "and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
     public Set<Course> getCourses(@PathVariable("id") int id) {
 
         Professor professor = professorService.get(id);
@@ -144,7 +144,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @GetMapping("/{id}/students")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.PROFESSOR)" + "and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
     public Set<Student> getStudents(@PathVariable("id") int id) {
 
         Professor professor = professorService.get(id);
@@ -162,7 +162,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @PutMapping("/{id}/updateStudentGrade")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.PROFESSOR)" + "and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasAnyAuthority('course:write') and @UserSecurity.hasUserId(authentication, #id)")
     public StudentCourse setGrade(@PathVariable("id") int id, @RequestParam("cId") int courseId,
                                   @RequestParam("sId") int studentId, @RequestParam double grade) {
 
@@ -182,7 +182,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @GetMapping("/{id}/studentsAverage")
-    @PreAuthorize(value = "hasAnyAuthority(@Roles.MANAGER, @Roles.PROFESSOR)" + "and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
     public double getAverage(@PathVariable("id") int id) {
 
         Professor professor = professorService.get(id);
