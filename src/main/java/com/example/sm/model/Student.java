@@ -3,14 +3,17 @@ package com.example.sm.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
 
+import static com.example.sm.security.ApplicationUserRole.PROFESSOR;
+import static com.example.sm.security.ApplicationUserRole.STUDENT;
+
 @Entity
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "studentCourses", "role", "password"})
-public class Student extends User {
+public class Student extends ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,9 +47,9 @@ public class Student extends User {
     @ManyToOne
     private Faculty faculty;
 
-
     public Student() {
-        role = "STUDENT";
+
+        setGrantedAuthorities(STUDENT.getGrantedAuthorities());
     }
 
     @Override

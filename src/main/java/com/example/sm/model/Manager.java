@@ -2,11 +2,17 @@ package com.example.sm.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Set;
+
+import static com.example.sm.security.ApplicationUserRole.MANAGER;
+import static com.example.sm.security.ApplicationUserRole.PROFESSOR;
 
 @Entity
-public class Manager extends User {
+public class Manager extends ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +37,8 @@ public class Manager extends User {
     private String lastName;
 
     public Manager() {
-        role = "MANAGER";
+
+        setGrantedAuthorities(MANAGER.getGrantedAuthorities());
     }
 
     @Override

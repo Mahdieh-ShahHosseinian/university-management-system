@@ -41,7 +41,6 @@ public class Faculty extends RepresentationModel<Faculty> {
 
     @Override
     public boolean equals(Object obj) {
-
         Faculty faculty = null;
         if (obj instanceof Faculty) faculty = (Faculty) obj;
         assert faculty != null;

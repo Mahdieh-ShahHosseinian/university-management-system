@@ -6,6 +6,7 @@ import com.example.sm.model.Student;
 import com.example.sm.model.StudentCourse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +17,12 @@ import java.util.Set;
 public class StudentService implements ServiceInterface<Student> {
 
     private StudentRepository repository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Student save(Student student) {
 
-        String encodedPass = bCryptPasswordEncoder.encode(student.getPassword());
+        String encodedPass = passwordEncoder.encode(student.getPassword());
         student.setPassword(encodedPass);
         return repository.save(student);
     }

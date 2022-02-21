@@ -3,7 +3,6 @@ package com.example.sm.service;
 import com.example.sm.dao.ManagerRepository;
 import com.example.sm.model.Manager;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,12 @@ import java.util.List;
 public class ManagerService implements ServiceInterface<Manager> {
 
     private ManagerRepository repository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Manager save(Manager manager) {
 
-        String encodedPass = bCryptPasswordEncoder.encode(manager.getPassword());
+        String encodedPass = passwordEncoder.encode(manager.getPassword());
         manager.setPassword(encodedPass);
         return repository.save(manager);
     }

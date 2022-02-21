@@ -1,15 +1,19 @@
 package com.example.sm.model;
 
+import com.example.sm.security.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
 
+import static com.example.sm.security.ApplicationUserRole.PROFESSOR;
+
 @Entity
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "courses", "role", "password"})
-public class Professor extends User {
+public class Professor extends ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +47,9 @@ public class Professor extends User {
     @ManyToOne
     private Faculty faculty;
 
-
     public Professor() {
-        role = "PROFESSOR";
+
+        setGrantedAuthorities(PROFESSOR.getGrantedAuthorities());
     }
 
     @Override

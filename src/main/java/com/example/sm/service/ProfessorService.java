@@ -3,7 +3,7 @@ package com.example.sm.service;
 import com.example.sm.dao.ProfessorRepository;
 import com.example.sm.model.*;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,12 +15,12 @@ import java.util.Set;
 public class ProfessorService implements ServiceInterface<Professor> {
 
     private ProfessorRepository repository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Professor save(Professor professor) {
 
-        String encodedPass = bCryptPasswordEncoder.encode(professor.getPassword());
+        String encodedPass = passwordEncoder.encode(professor.getPassword());
         professor.setPassword(encodedPass);
         return repository.save(professor);
     }
