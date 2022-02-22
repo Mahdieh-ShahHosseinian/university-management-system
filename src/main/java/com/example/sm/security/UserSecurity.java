@@ -28,13 +28,13 @@ public class UserSecurity {
 
         ApplicationUser applicationUser = null;
         switch (role) {
-            case "ROLE_MANAGER":
+            case "MANAGER":
                 applicationUser = managerService.get(id);
                 break;
-            case "ROLE_PROFESSOR":
+            case "PROFESSOR":
                 applicationUser = professorService.get(id);
                 break;
-            case "ROLE_STUDENT":
+            case "STUDENT":
                 applicationUser = studentService.get(id);
                 break;
         }
