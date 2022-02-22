@@ -22,19 +22,27 @@ public class UserSecurity {
     private StudentService studentService;
 
     public boolean hasUserId(Authentication authentication, int id) {
+        
+        List<String> authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-        String role = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()).get(0);
+        String role = "";
+        for (String authority : authorities) {
+            if (authority.startsWith("ROLE_")) {
+                role = authority;
+                break;
+            }
+        }
 
         ApplicationUser applicationUser = null;
         switch (role) {
-            case "MANAGER":
+            case "ROLE_MANAGER":
                 applicationUser = managerService.get(id);
                 break;
-            case "PROFESSOR":
+            case "ROLE_PROFESSOR":
                 applicationUser = professorService.get(id);
                 break;
-            case "STUDENT":
+            case "ROLE_STUDENT":
                 applicationUser = studentService.get(id);
                 break;
         }
