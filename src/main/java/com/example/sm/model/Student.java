@@ -14,7 +14,7 @@ import static com.example.sm.security.ApplicationUserRole.STUDENT;
 
 @Entity
 @Data
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "studentCourses", "role", "password"})
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "studentCourses", "role", "password", "profilePicture"})
 public class Student extends ApplicationUser {
 
     @Id
@@ -36,6 +36,10 @@ public class Student extends ApplicationUser {
 
     @ManyToOne
     private Faculty faculty;
+
+    @Lob
+    @Column(length = 1000)
+    private byte[] profilePicture;
 
     public Student() {
         setGrantedAuthorities(STUDENT.getGrantedAuthorities());

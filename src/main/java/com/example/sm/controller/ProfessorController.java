@@ -2,7 +2,10 @@ package com.example.sm.controller;
 
 import com.example.sm.dto.ProfessorDTO;
 import com.example.sm.exception.RecordNotFoundException;
-import com.example.sm.model.*;
+import com.example.sm.model.Course;
+import com.example.sm.model.Professor;
+import com.example.sm.model.Student;
+import com.example.sm.model.StudentCourse;
 import com.example.sm.service.CourseService;
 import com.example.sm.service.ProfessorService;
 import com.example.sm.service.StudentCourseService;
@@ -10,8 +13,12 @@ import com.example.sm.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -116,7 +123,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @GetMapping("/{id}/courses")
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id))")
     public Set<Course> getCourses(@PathVariable("id") int id) {
 
         Professor professor = professorService.get(id);
@@ -139,7 +146,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @GetMapping("/{id}/students")
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id))")
     public Set<Student> getStudents(@PathVariable("id") int id) {
 
         Professor professor = professorService.get(id);
@@ -157,7 +164,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @PutMapping("/{id}/updateStudentGrade")
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasAnyAuthority('course:write') and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('course:write') and @UserSecurity.hasUserId(authentication, #id))")
     public StudentCourse setGrade(@PathVariable("id") int id, @RequestParam("cId") int courseId,
                                   @RequestParam("sId") int studentId, @RequestParam double grade) {
 
@@ -177,7 +184,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @GetMapping("/{id}/studentsAverage")
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id)")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id))")
     public double getAverage(@PathVariable("id") int id) {
 
         Professor professor = professorService.get(id);
@@ -185,5 +192,30 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
             throw new RecordNotFoundException("Invalid Professor personnel ID : " + id);
         }
         return professorService.calculateAllStudentsAverage(getStudents(id));
+    }
+
+    @PostMapping("/{id}/setProfilePicture")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:write') and @UserSecurity.hasUserId(authentication, #id))")
+    public ResponseEntity<String> uploadProfilePicture(@PathVariable("id") int id, @RequestParam("profile") MultipartFile profilePic) {
+
+        String message = "";
+        try {
+            professorService.setProfilePicture(profilePic, id);
+            message = "Profile has been changed successfully: " + profilePic.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        } catch (Exception e) {
+            message = "Could not change the profile picture: " + profilePic.getOriginalFilename() + "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+        }
+    }
+
+    @GetMapping("/{id}/getProfilePicture")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id))")
+    public ResponseEntity<byte[]> downloadProfilePicture(@PathVariable int id) {
+
+        byte[] profilePic = professorService.get(id).getProfilePicture();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; \"profile picture\"")
+                .body(profilePic);
     }
 }

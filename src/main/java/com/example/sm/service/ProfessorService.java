@@ -3,16 +3,17 @@ package com.example.sm.service;
 import com.example.sm.dao.ProfessorRepository;
 import com.example.sm.model.*;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ProfessorService implements ServiceInterface<Professor> {
@@ -87,5 +88,21 @@ public class ProfessorService implements ServiceInterface<Professor> {
         }
 
         return totalAverage / totalUnits;
+    }
+
+    public void setProfilePicture(MultipartFile profilePic, int id) throws IOException {
+
+        String picName = profilePic.getOriginalFilename();
+        assert picName != null;
+        String picFormat = picName.substring(picName.lastIndexOf('.'));
+        if (picFormat.endsWith(".jpg") || picFormat.endsWith(".jpeg")
+                || picFormat.endsWith(".png")) {
+            Professor p = get(id);
+            p.setProfilePicture(profilePic.getBytes());
+            save(p);
+        } else {
+            log.error("File format {} not supported.", picFormat);
+            throw new IOException();
+        }
     }
 }

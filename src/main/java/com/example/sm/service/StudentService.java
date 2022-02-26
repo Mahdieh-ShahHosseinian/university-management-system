@@ -2,16 +2,21 @@ package com.example.sm.service;
 
 import com.example.sm.dao.StudentRepository;
 import com.example.sm.model.Faculty;
+import com.example.sm.model.Professor;
 import com.example.sm.model.Student;
 import com.example.sm.model.StudentCourse;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class StudentService implements ServiceInterface<Student> {
@@ -68,5 +73,21 @@ public class StudentService implements ServiceInterface<Student> {
             totalUnits += sc.getStudentCourseId().getCourse().getUnit();
         }
         return totalAverage / totalUnits;
+    }
+
+    public void setProfilePicture(MultipartFile profilePic, int id) throws IOException {
+
+        String picName = profilePic.getOriginalFilename();
+        assert picName != null;
+        String picFormat = picName.substring(picName.lastIndexOf('.'));
+        if (picFormat.endsWith(".jpg") || picFormat.endsWith(".jpeg")
+                || picFormat.endsWith(".png")) {
+            Student s = get(id);
+            s.setProfilePicture(profilePic.getBytes());
+            save(s);
+        } else {
+            log.error("File format {} not supported.", picFormat);
+            throw new IOException();
+        }
     }
 }
