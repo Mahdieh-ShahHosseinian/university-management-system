@@ -8,19 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.example.sm.controller.APIController.BASE_URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/api")
-public class HomeController {
+@RequestMapping(BASE_URI)
+public class HomeController extends APIController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_PROFESSOR', 'ROLE_STUDENT')")
     public List<Link> showLinks() {
 
-        Link l1 = linkTo(FacultyController.class).slash("/getAll").withRel("faculties");
-        Link l2 = linkTo(ProfessorController.class).slash("/getAll").withRel("professors");
-        Link l3 = linkTo(StudentController.class).slash("/getAll").withRel("students");
+        Link l1 = linkTo(FacultyController.class).slash("/all").withRel("faculties");
+        Link l2 = linkTo(ProfessorController.class).slash("/all").withRel("professors");
+        Link l3 = linkTo(StudentController.class).slash("/all").withRel("students");
 
         return List.of(l1, l2, l3);
     }

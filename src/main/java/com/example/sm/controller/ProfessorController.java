@@ -24,11 +24,12 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+import static com.example.sm.controller.APIController.BASE_URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/professors")
+@RequestMapping(BASE_URI + "professors")
 @AllArgsConstructor
 public class ProfessorController implements ControllerInterface<Professor, ProfessorDTO> {
 
@@ -52,7 +53,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
     }
 
     @Override
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Professor> getAll() {
 
@@ -116,9 +117,11 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
         professor.add(link);
         link = linkTo(methodOn(ProfessorController.class).getStudents(professor.getPersonnelId())).withRel("professor-students");
         professor.add(link);
-        link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("updateStudentGrade?cId=&sId=&grade=").withRel("professor-updateStudentGrade");
+        link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("studentGrade?cId=&sId=&grade=").withRel("professor-studentGrade");
         professor.add(link);
         link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("studentsAverage").withRel("professor-studentsAverage");
+        professor.add(link);
+        link = linkTo(ProfessorController.class).slash((professor.getPersonnelId())).slash("profilePicture").withRel("professor-profilePicture");
         professor.add(link);
     }
 
@@ -163,7 +166,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
         return students;
     }
 
-    @PutMapping("/{id}/updateStudentGrade")
+    @PutMapping("/{id}/studentGrade")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('course:write') and @UserSecurity.hasUserId(authentication, #id))")
     public StudentCourse setGrade(@PathVariable("id") int id, @RequestParam("cId") int courseId,
                                   @RequestParam("sId") int studentId, @RequestParam double grade) {
@@ -194,7 +197,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
         return professorService.calculateAllStudentsAverage(getStudents(id));
     }
 
-    @PostMapping("/{id}/setProfilePicture")
+    @PostMapping("/{id}/profilePicture")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:write') and @UserSecurity.hasUserId(authentication, #id))")
     public ResponseEntity<String> uploadProfilePicture(@PathVariable("id") int id, @RequestParam("profile") MultipartFile profilePic) {
 
@@ -209,7 +212,7 @@ public class ProfessorController implements ControllerInterface<Professor, Profe
         }
     }
 
-    @GetMapping("/{id}/getProfilePicture")
+    @GetMapping("/{id}/profilePicture")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('professor:read') and @UserSecurity.hasUserId(authentication, #id))")
     public ResponseEntity<byte[]> downloadProfilePicture(@PathVariable int id) {
 

@@ -17,11 +17,12 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+import static com.example.sm.controller.APIController.BASE_URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/faculties")
+@RequestMapping(BASE_URI + "faculties")
 @AllArgsConstructor
 public class FacultyController implements ControllerInterface<Faculty, FacultyDTO> {
 
@@ -41,7 +42,7 @@ public class FacultyController implements ControllerInterface<Faculty, FacultyDT
     }
 
     @Override
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Faculty> getAll() {
 

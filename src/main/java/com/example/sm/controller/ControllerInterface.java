@@ -1,7 +1,5 @@
 package com.example.sm.controller;
 
-import com.example.sm.model.Professor;
-
 import java.util.List;
 
 public interface ControllerInterface<T, Q> {
