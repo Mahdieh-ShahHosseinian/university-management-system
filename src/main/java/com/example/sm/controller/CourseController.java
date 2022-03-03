@@ -3,7 +3,6 @@ package com.example.sm.controller;
 import com.example.sm.dto.CourseDTO;
 import com.example.sm.exception.RecordNotFoundException;
 import com.example.sm.model.Course;
-import com.example.sm.model.Professor;
 import com.example.sm.service.CourseService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.example.sm.controller.APIController.BASE_URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/api/courses")
+@RequestMapping(BASE_URI + "courses")
 @PreAuthorize("hasRole('ROLE_MANAGER')")
 @AllArgsConstructor
 public class CourseController implements ControllerInterface<Course, CourseDTO> {
@@ -37,7 +37,7 @@ public class CourseController implements ControllerInterface<Course, CourseDTO> 
     }
 
     @Override
-    @GetMapping("/getAll") // TODO
+    @GetMapping("/all")
     public List<Course> getAll() {
 
         List<Course> courses = courseService.getAll();

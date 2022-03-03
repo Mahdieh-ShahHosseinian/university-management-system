@@ -3,7 +3,6 @@ package com.example.sm.controller;
 import com.example.sm.dto.StudentDTO;
 import com.example.sm.exception.RecordNotFoundException;
 import com.example.sm.model.Course;
-import com.example.sm.model.Professor;
 import com.example.sm.model.Student;
 import com.example.sm.service.CourseService;
 import com.example.sm.service.StudentCourseService;
@@ -21,10 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.example.sm.controller.APIController.BASE_URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping(BASE_URI + "students")
 @AllArgsConstructor
 public class StudentController implements ControllerInterface<Student, StudentDTO> {
 
@@ -46,7 +46,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
     }
 
     @Override
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     public List<Student> getAll() {
 
@@ -99,13 +99,15 @@ public class StudentController implements ControllerInterface<Student, StudentDT
 
     private void addOptionalLinks(Student student) {
 
-        Link link = linkTo(StudentController.class).slash((student.getStudentId())).slash("takeCourse?cId=").withRel("student-takeCourse");
+        Link link = linkTo(StudentController.class).slash((student.getStudentId())).slash("newCourse?cId=").withRel("student-newCourse");
         student.add(link);
-        link = linkTo(StudentController.class).slash((student.getStudentId())).slash("getAverage").withRel("student-getAverage");
+        link = linkTo(StudentController.class).slash((student.getStudentId())).slash("average").withRel("student-average");
+        student.add(link);
+        link = linkTo(StudentController.class).slash((student.getStudentId())).slash("profilePicture").withRel("student-profilePicture");
         student.add(link);
     }
 
-    @PutMapping("/{id}/takeCourse")
+    @PutMapping("/{id}/newCourse")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('course:write') and @UserSecurity.hasUserId(authentication, #id))")
     public Course selectCourse(@PathVariable("id") int id, @RequestParam("cId") int courseId) {
 
@@ -115,13 +117,13 @@ public class StudentController implements ControllerInterface<Student, StudentDT
         return studentCourseService.addCourse(studentService.get(id), courseService.get(courseId));
     }
 
-    @GetMapping("/{id}/getAverage")
+    @GetMapping("/{id}/average")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('student:read') and @UserSecurity.hasUserId(authentication, #id))")
     public double getAverage(@PathVariable("id") int id) {
         return studentService.calculateAverage(id);
     }
 
-    @PostMapping("/{id}/setProfilePicture")
+    @PostMapping("/{id}/profilePicture")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('student:write') and @UserSecurity.hasUserId(authentication, #id))")
     public ResponseEntity<String> uploadProfilePicture(@PathVariable("id") int id, @RequestParam("profile") MultipartFile profilePic) {
 
@@ -136,7 +138,7 @@ public class StudentController implements ControllerInterface<Student, StudentDT
         }
     }
 
-    @GetMapping("/{id}/getProfilePicture")
+    @GetMapping("/{id}/profilePicture")
     @PreAuthorize("hasRole('ROLE_MANAGER') or (hasAnyAuthority('student:read') and @UserSecurity.hasUserId(authentication, #id))")
     public ResponseEntity<byte[]> downloadProfilePicture(@PathVariable int id) {
 
