@@ -1,40 +1,89 @@
 package com.example.sm.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
-
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "studentCourses"})
-public class Course extends RepresentationModel<Course> {
+public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-    @Column(unique = true, nullable = false, length = 20)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false, length = 1)
-    private int unit;
+    private Integer unit;
 
     @ManyToOne
-    private Professor professor;
+    private Faculty faculty;
+
+    @ManyToMany(mappedBy = "courses")
+    private Set<Professor> professors;
 
     @OneToMany(mappedBy = "studentCourseId.course", fetch = FetchType.EAGER)
     private Set<StudentCourse> studentCourses;
 
-    @ManyToOne
-    private Faculty faculty;
+    public Course() {
+
+    }
+
+    public Course(Integer id, String name, Integer unit, Faculty faculty) {
+        this.id = id;
+        this.name = name;
+        this.unit = unit;
+        this.faculty = faculty;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer courseId) {
+        this.id = courseId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public Set<Professor> getProfessors() {
+        return professors;
+    }
+
+    public void setProfessors(Set<Professor> professors) {
+        this.professors = professors;
+    }
+
+    public Set<StudentCourse> getStudentCourses() {
+        return studentCourses;
+    }
+
+    public void setStudentCourses(Set<StudentCourse> studentCourses) {
+        this.studentCourses = studentCourses;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -42,6 +91,6 @@ public class Course extends RepresentationModel<Course> {
         Course course = null;
         if (obj instanceof Course) course = (Course) obj;
         assert course != null;
-        return id == course.getId();
+        return Objects.equals(id, course.getId());
     }
 }

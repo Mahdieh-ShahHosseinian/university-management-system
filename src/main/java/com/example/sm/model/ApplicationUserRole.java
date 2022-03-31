@@ -1,19 +1,19 @@
-package com.example.sm.security;
+package com.example.sm.model;
 
-import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.example.sm.security.ApplicationUserPermission.*;
+import static com.example.sm.model.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
 
-    MANAGER(Sets.newHashSet(FACULTY_READ, FACULTY_WRITE, PROFESSOR_READ, PROFESSOR_WRITE, STUDENT_READ, STUDENT_WRITE, COURSE_READ, COURSE_WRITE)),
-    PROFESSOR(Sets.newHashSet(PROFESSOR_READ, COURSE_WRITE)),
-    STUDENT(Sets.newHashSet(STUDENT_READ, COURSE_READ));
+    ADMIN(EnumSet.allOf(ApplicationUserPermission.class)),
+    MANAGER(EnumSet.of(FACULTY_READ, FACULTY_WRITE, PROFESSOR_READ, PROFESSOR_WRITE, STUDENT_READ, STUDENT_WRITE, COURSE_READ, COURSE_WRITE)),
+    PROFESSOR(EnumSet.of(PROFESSOR_READ, COURSE_WRITE)),
+    STUDENT(EnumSet.of(STUDENT_READ, COURSE_READ));
 
     private final Set<ApplicationUserPermission> permissions;
 

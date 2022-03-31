@@ -1,28 +1,54 @@
 package com.example.sm.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 
 @Embeddable
-@Data
-@NoArgsConstructor
 public class StudentCourseId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ManyToOne
-    private Student student;
+    private Professor professor;
 
     @ManyToOne
     private Course course;
 
-    public StudentCourseId(Student student, Course course) {
+    @ManyToOne
+    private Student student;
+
+    public StudentCourseId() {
+
+    }
+
+    public StudentCourseId(Student student) {
         this.student = student;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

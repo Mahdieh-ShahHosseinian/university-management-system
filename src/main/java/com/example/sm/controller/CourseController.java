@@ -1,93 +1,56 @@
 package com.example.sm.controller;
 
 import com.example.sm.dto.CourseDTO;
-import com.example.sm.exception.RecordNotFoundException;
-import com.example.sm.model.Course;
-import com.example.sm.service.CourseService;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.Link;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.sm.service.crudservice.CourseCRUDService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.sm.controller.APIController.BASE_URI;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(BASE_URI + "courses")
-@PreAuthorize("hasRole('ROLE_MANAGER')")
-@AllArgsConstructor
-public class CourseController implements ControllerInterface<Course, CourseDTO> {
+public class CourseController implements ControllerInterface<CourseDTO> {
 
-    private ModelMapper modelMapper;
-    private CourseService courseService;
+    private final CourseCRUDService courseCRUDService;
+
+    public CourseController(CourseCRUDService courseCRUDService) {
+        this.courseCRUDService = courseCRUDService;
+    }
 
     @Override
     @PostMapping
-    public Course save(@Valid @RequestBody CourseDTO courseDto) {
-
-        Course course = modelMapper.map(courseDto, Course.class);
-        course = courseService.save(course);
-        Link link = linkTo(CourseController.class).slash(course.getId()).withSelfRel();
-        course.add(link);
-        return course;
+    public CourseDTO save(@RequestBody CourseDTO courseDTO) {
+        return courseCRUDService.save(courseDTO);
     }
 
     @Override
     @GetMapping("/all")
-    public List<Course> getAll() {
+    public List<CourseDTO> getAll() {
+        return courseCRUDService.getAll();
+    }
 
-        List<Course> courses = courseService.getAll();
-        for (Course course : courses) {
-            addPrimaryLinks(course);
-        }
-        return courses;
+    @Override
+    @GetMapping("/all/pagination")
+    public List<CourseDTO> getAllPaginated(@RequestParam int page, @RequestParam int size) {
+        return courseCRUDService.getAllPaginated(page, size);
     }
 
     @Override
     @GetMapping("/{id}")
-    public Course get(@PathVariable int id) {
-
-        Course course = courseService.get(id);
-        addPrimaryLinks(course);
-        return course;
+    public CourseDTO get(@PathVariable int id) {
+        return courseCRUDService.get(id);
     }
 
     @Override
     @PutMapping("{id}")
-    public Course update(@Valid @RequestBody CourseDTO courseDto, @PathVariable int id) {
-
-        Course course = modelMapper.map(courseDto, Course.class);
-        if (courseService.get(id) == null) {
-            throw new RecordNotFoundException("Invalid course id : " + id);
-        }
-        course = courseService.update(course, id);
-        addPrimaryLinks(course);
-        return course;
+    public CourseDTO update(@RequestBody CourseDTO courseDTO, @PathVariable int id) {
+        return courseCRUDService.update(courseDTO, id);
     }
 
     @Override
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") int id) {
-
-        if (courseService.get(id) == null) {
-            throw new RecordNotFoundException("Invalid course id : " + id);
-        }
-        courseService.delete(id);
-    }
-
-    private void addPrimaryLinks(Course course) {
-
-        Link link = linkTo(CourseController.class).slash(course.getId()).withSelfRel();
-        course.add(link);
-        link = linkTo(FacultyController.class).slash(course.getFaculty().getId()).withSelfRel();
-        if (!course.getFaculty().hasLinks()) course.getFaculty().add(link);
-        link = linkTo(ProfessorController.class).slash(course.getProfessor().getPersonnelId()).withSelfRel();
-        course.getProfessor().add(link);
-        link = linkTo(FacultyController.class).slash(course.getProfessor().getFaculty().getId()).withSelfRel();
-        if (!course.getProfessor().getFaculty().hasLinks()) course.getProfessor().getFaculty().add(link);
+        courseCRUDService.delete(id);
     }
 }

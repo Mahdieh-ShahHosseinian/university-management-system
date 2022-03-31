@@ -1,16 +1,34 @@
 package com.example.sm.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+public class FacultyDTO extends RepresentationModel<FacultyDTO> {
 
-public class FacultyDTO {
+    private Integer id;
+    private String name;
 
-	@Getter
-	@Setter
-	@NotEmpty(message = "name must not be empty")
-	@Size(min = 2, max = 15)
-	private String name;
+    public FacultyDTO() {
+
+    }
+
+    public FacultyDTO(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

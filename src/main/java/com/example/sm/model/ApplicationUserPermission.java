@@ -1,13 +1,17 @@
-package com.example.sm.security;
+package com.example.sm.model;
 
 public enum ApplicationUserPermission {
 
-    FACULTY_READ("faculty:read"),
-    FACULTY_WRITE("faculty:write"),
+    ADMIN_READ("admin:read"),
+    ADMIN_WRITE("admin:write"),
+    MANAGER_READ("manager:read"),
+    MANAGER_WRITE("manager:write"),
     PROFESSOR_READ("professor:read"),
     PROFESSOR_WRITE("professor:write"),
     STUDENT_READ("student:read"),
     STUDENT_WRITE("student:write"),
+    FACULTY_READ("faculty:read"),
+    FACULTY_WRITE("faculty:write"),
     COURSE_READ("course:read"),
     COURSE_WRITE("course:write");
 

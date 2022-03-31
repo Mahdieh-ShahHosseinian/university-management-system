@@ -1,38 +1,56 @@
 package com.example.sm.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Objects;
 
-import static com.example.sm.security.ApplicationUserRole.MANAGER;
-import static com.example.sm.security.ApplicationUserRole.PROFESSOR;
+import static com.example.sm.model.ApplicationUserRole.MANAGER;
 
 @Entity
-@Data
 public class Manager extends ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private int managerId;
+    private Integer id;
 
-    @Column(unique = true, nullable = false, length = 10)
-    private long nationalId;
+    @Column(nullable = false, unique = true)
+    private Integer personnelId;
 
-    @Column(nullable = false, length = 20)
-    private String firstName;
-
-    @Column(nullable = false, length = 20)
-    private String lastName;
+    @ManyToOne
+    private Faculty faculty;
 
     public Manager() {
-        setGrantedAuthorities(MANAGER.getGrantedAuthorities());
+
+    }
+
+    public Manager(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer personnelId, Faculty faculty) {
+        super(username, password, firstName, lastName, nationalId, MANAGER.getGrantedAuthorities());
+        this.id = id;
+        this.personnelId = personnelId;
+        this.faculty = faculty;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPersonnelId() {
+        return personnelId;
+    }
+
+    public void setPersonnelId(Integer personnelId) {
+        this.personnelId = personnelId;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override
@@ -41,6 +59,6 @@ public class Manager extends ApplicationUser {
         Manager manager = null;
         if (obj instanceof Manager) manager = (Manager) obj;
         assert manager != null;
-        return managerId == manager.getManagerId();
+        return Objects.equals(personnelId, manager.getPersonnelId());
     }
 }

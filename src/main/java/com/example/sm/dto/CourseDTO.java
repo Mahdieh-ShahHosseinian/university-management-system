@@ -1,35 +1,55 @@
 package com.example.sm.dto;
 
 import com.example.sm.model.Faculty;
-import com.example.sm.model.Professor;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
+import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-public class CourseDTO {
+public class CourseDTO extends RepresentationModel<CourseDTO> {
 
-	@Getter
-	@Setter
-	@NotEmpty(message = "name must not be empty")
-	@Size(min = 2, max = 15)
-	private String name;
+    private Integer id;
+    private String name;
+    private Integer unit;
+    private Faculty faculty;
 
-	@Getter
-	@Setter
-	@Range(min = 1, max = 5, message = "invalid unit")
-	private int unit;
+    public CourseDTO() {
+    }
 
-	@Getter
-	@Setter
-	@NotNull(message = "professor cannot be null")
-	private Professor professor;
+    public CourseDTO(Integer id, String name, Integer unit, Faculty faculty) {
+        this.id = id;
+        this.name = name;
+        this.unit = unit;
+        this.faculty = faculty;
+    }
 
-	@Getter
-	@Setter
-	@NotNull(message = "faculty cannot be null")
-	private Faculty faculty;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 }

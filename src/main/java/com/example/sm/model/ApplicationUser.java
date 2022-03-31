@@ -1,35 +1,53 @@
 package com.example.sm.model;
 
-import lombok.AccessLevel;
-import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import java.util.Collection;
-import java.util.Set;
 
 @MappedSuperclass
-public class ApplicationUser extends RepresentationModel<ApplicationUser> implements UserDetails {
+public class ApplicationUser implements UserDetails {
 
-    @Setter(AccessLevel.PROTECTED)
-    @Transient
-    private Set<? extends GrantedAuthority> grantedAuthorities;
-
-    @Setter
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
-
-    @Setter
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false)
     private String password;
+    @Transient
+    private Collection<? extends GrantedAuthority> grantedAuthorities;
+    @Column(nullable = false)
+    private String firstname;
+    @Column(nullable = false)
+    private String lastname;
+    @Column(length = 10)
+    private Integer nationalId;
+    @Lob
+    @Column(length = 1000)
+    private byte[] profilePicture;
+
+    public ApplicationUser() {
+
+    }
+
+    public ApplicationUser(String username, String password, String firstName, String lastName, Integer nationalId, Collection<? extends GrantedAuthority> grantedAuthorities) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstName;
+        this.lastname = lastName;
+        this.nationalId = nationalId;
+        this.grantedAuthorities = grantedAuthorities;
+    }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantedAuthorities;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -37,9 +55,53 @@ public class ApplicationUser extends RepresentationModel<ApplicationUser> implem
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
-    public String getUsername() {
-        return username;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return grantedAuthorities;
+    }
+
+    public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
+        return grantedAuthorities;
+    }
+
+    public void setGrantedAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
+        this.grantedAuthorities = grantedAuthorities;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Integer getNationalId() {
+        return nationalId;
+    }
+
+    public void setNationalId(Integer nationalId) {
+        this.nationalId = nationalId;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     @Override

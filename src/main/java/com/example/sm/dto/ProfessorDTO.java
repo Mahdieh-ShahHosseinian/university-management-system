@@ -1,46 +1,45 @@
 package com.example.sm.dto;
 
 import com.example.sm.model.Faculty;
-import lombok.Getter;
-import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+public class ProfessorDTO extends ApplicationUserDTO<ProfessorDTO> {
 
-public class ProfessorDTO {
-
-    @Getter
-    @Setter
-//	@Range(min = 9, max = 10, message = "nationalId should be 10 numbers") TODO
-    private long nationalId;
-
-    @Getter
-    @Setter
-    @NotEmpty(message = "firstName must not be empty")
-    @Size(min = 2, max = 15)
-    private String firstName;
-
-    @Getter
-    @Setter
-    @NotEmpty(message = "lastName must not be empty")
-    @Size(min = 2, max = 15)
-    private String lastName;
-
-    @Getter
-    @Setter
-    @NotEmpty(message = "firstName must not be empty")
-    @Size(min = 4, max = 15)
-    private String username;
-
-    @Getter
-    @Setter
-    @NotEmpty(message = "firstName must not be empty")
-    @Size(min = 6, max = 15)
-    private String password;
-
-    @Getter
-    @Setter
-    @NotNull(message = "faculty cannot be null")
+    private Integer id;
+    private Integer personnelId;
     private Faculty faculty;
+
+    public ProfessorDTO() {
+
+    }
+
+    public ProfessorDTO(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer personnelId, Faculty faculty) {
+        super(username, password, firstName, lastName, nationalId);
+        this.id = id;
+        this.personnelId = personnelId;
+        this.faculty = faculty;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPersonnelId() {
+        return personnelId;
+    }
+
+    public void setPersonnelId(Integer personnelId) {
+        this.personnelId = personnelId;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 }

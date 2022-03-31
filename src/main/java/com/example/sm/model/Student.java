@@ -1,56 +1,66 @@
 package com.example.sm.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.util.Set;
 
-import static com.example.sm.security.ApplicationUserRole.PROFESSOR;
-import static com.example.sm.security.ApplicationUserRole.STUDENT;
+import static com.example.sm.model.ApplicationUserRole.STUDENT;
 
 @Entity
-@Data
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "studentCourses", "role", "password", "profilePicture"})
 public class Student extends ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private int studentId;
+    private Integer id;
 
-    @Column(unique = true, nullable = false, length = 10)
-    private long nationalId;
-
-    @Column(nullable = false, length = 20)
-    private String firstName;
-
-    @Column(nullable = false, length = 20)
-    private String lastName;
-
-    @OneToMany(mappedBy = "studentCourseId.student", fetch = FetchType.EAGER)
-    private Set<StudentCourse> studentCourses;
+    @Column(nullable = false, unique = true)
+    private Integer studentId;
 
     @ManyToOne
     private Faculty faculty;
 
-    @Lob
-    @Column(length = 1000)
-    private byte[] profilePicture;
+    @OneToMany(mappedBy = "studentCourseId.student", fetch = FetchType.EAGER)
+    private Set<StudentCourse> studentCourses;
 
     public Student() {
-        setGrantedAuthorities(STUDENT.getGrantedAuthorities());
+
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    public Student(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer studentId, Faculty faculty) {
+        super(username, password, firstName, lastName, nationalId, STUDENT.getGrantedAuthorities());
+        this.id = id;
+        this.studentId = studentId;
+        this.faculty = faculty;
+    }
 
-        Student student = null;
-        if (obj instanceof Student) student = (Student) obj;
-        assert student != null;
-        return studentId == student.getStudentId();
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public Set<StudentCourse> getStudentCourses() {
+        return studentCourses;
+    }
+
+    public void setStudentCourses(Set<StudentCourse> studentCourses) {
+        this.studentCourses = studentCourses;
     }
 }

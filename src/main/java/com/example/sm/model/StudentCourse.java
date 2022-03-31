@@ -1,29 +1,41 @@
 package com.example.sm.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
-
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AssociationOverrides({
-        @AssociationOverride(name = "studentCourseId.student", joinColumns = @JoinColumn(name = "student_id")),
-        @AssociationOverride(name = "studentCourseId.course", joinColumns = @JoinColumn(name = "course_id"))})
-public class StudentCourse extends RepresentationModel<StudentCourse> {
+public class StudentCourse {
 
     @EmbeddedId
-    private StudentCourseId studentCourseId = new StudentCourseId();
+    private StudentCourseId studentCourseId;
 
-    private double grade;
+    private Double grade;
 
-    public StudentCourse(Student student, Course course) {
-        studentCourseId.setStudent(student);
+    public StudentCourse() {
+
+    }
+
+    public StudentCourse(Professor professor, Course course, Student student) {
+        assert false;
+        studentCourseId.setProfessor(professor);
         studentCourseId.setCourse(course);
+        studentCourseId.setStudent(student);
+    }
+
+    public StudentCourseId getStudentCourseId() {
+        return studentCourseId;
+    }
+
+    public void setStudentCourseId(StudentCourseId studentCourseId) {
+        this.studentCourseId = studentCourseId;
+    }
+
+    public Double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
     }
 
     @Override
