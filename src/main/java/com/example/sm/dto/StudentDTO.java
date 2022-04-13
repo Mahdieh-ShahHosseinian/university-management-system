@@ -2,6 +2,8 @@ package com.example.sm.dto;
 
 import com.example.sm.model.Faculty;
 
+import java.util.Objects;
+
 public class StudentDTO extends ApplicationUserDTO<StudentDTO> {
 
     private Integer id;
@@ -41,5 +43,14 @@ public class StudentDTO extends ApplicationUserDTO<StudentDTO> {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        StudentDTO studentDTO = null;
+        if (obj instanceof StudentDTO) studentDTO = (StudentDTO) obj;
+        assert studentDTO != null;
+        return Objects.equals(id, studentDTO.getId());
     }
 }

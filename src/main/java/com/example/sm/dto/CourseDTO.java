@@ -1,7 +1,12 @@
 package com.example.sm.dto;
 
+import com.example.sm.model.Course;
 import com.example.sm.model.Faculty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Objects;
 
 
 public class CourseDTO extends RepresentationModel<CourseDTO> {
@@ -51,5 +56,14 @@ public class CourseDTO extends RepresentationModel<CourseDTO> {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        CourseDTO courseDTO = null;
+        if (obj instanceof CourseDTO) courseDTO = (CourseDTO) obj;
+        assert courseDTO != null;
+        return Objects.equals(id, courseDTO.getId());
     }
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FacultyCRUDService implements ServiceInterface<FacultyDTO>, CRUDServiceInterface<Faculty, FacultyDTO> {
+public class FacultyCRUDService implements ServiceInterface<FacultyDTO, Integer>, CRUDServiceInterface<Faculty, FacultyDTO> {
 
     private final FacultyCoreService facultyCoreService;
 

@@ -53,4 +53,14 @@ public class StudentController implements ControllerInterface<StudentDTO> {
     public void delete(@PathVariable("id") int id) {
         studentCRUDService.delete(id);
     }
+
+    @PutMapping("{id}/addCourse")
+    public void addCourse(@PathVariable("id") int id, @RequestParam("professorId") int professorId, @RequestParam("courseId") int courseId) {
+        studentCRUDService.addCourse(id, professorId, courseId);
+    }
+
+    @GetMapping("{id}/average")
+    public Double getAverage(@PathVariable("id") int id) {
+        return studentCRUDService.getAverage(id);
+    }
 }

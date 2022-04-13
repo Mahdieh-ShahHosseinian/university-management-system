@@ -1,24 +1,34 @@
 package com.example.sm.service.crudservice;
 
+import com.example.sm.dto.CourseDTO;
 import com.example.sm.dto.ProfessorDTO;
+import com.example.sm.dto.StudentDTO;
+import com.example.sm.model.Course;
 import com.example.sm.model.Professor;
+import com.example.sm.model.Student;
 import com.example.sm.service.ServiceInterface;
 import com.example.sm.service.coreservice.ProfessorCoreService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class ProfessorCRUDService implements ServiceInterface<ProfessorDTO>, CRUDServiceInterface<Professor, ProfessorDTO> {
+public class ProfessorCRUDService implements ServiceInterface<ProfessorDTO, Integer>, CRUDServiceInterface<Professor, ProfessorDTO> {
 
     private final ProfessorCoreService professorCoreService;
     private final PasswordEncoder passwordEncoder;
+    private final CourseCRUDService courseCRUDService;
+    private final StudentCRUDService studentCRUDService;
 
-    public ProfessorCRUDService(ProfessorCoreService professorCoreService, PasswordEncoder passwordEncoder) {
+    public ProfessorCRUDService(ProfessorCoreService professorCoreService, PasswordEncoder passwordEncoder, CourseCRUDService courseCRUDService, StudentCRUDService studentCRUDService) {
         this.professorCoreService = professorCoreService;
         this.passwordEncoder = passwordEncoder;
+        this.courseCRUDService = courseCRUDService;
+        this.studentCRUDService = studentCRUDService;
     }
 
     @Override
@@ -61,6 +71,38 @@ public class ProfessorCRUDService implements ServiceInterface<ProfessorDTO>, CRU
     @Override
     public void delete(Integer id) {
         professorCoreService.delete(id);
+    }
+
+    public void addCourse(Integer id, Integer courseId) {
+        professorCoreService.addCourse(id, courseId);
+    }
+
+    public Set<CourseDTO> getCourses(int id) {
+
+        Set<CourseDTO> courseDTOSet = new HashSet<>();
+        Set<Course> courses = professorCoreService.getCourses(id);
+        for (Course course : courses) {
+            courseDTOSet.add(courseCRUDService.toDTO(course));
+        }
+        return courseDTOSet;
+    }
+
+    public Set<StudentDTO> getStudents(int id) {
+
+        Set<StudentDTO> studentDTOSet = new HashSet<>();
+        Set<Student> students = professorCoreService.getStudents(id);
+        for (Student student : students) {
+            studentDTOSet.add(studentCRUDService.toDTO(student));
+        }
+        return studentDTOSet;
+    }
+
+    public void setGrade(int id, int studentId, int courseId, double grade) {
+        professorCoreService.setGrade(id, studentId, courseId, grade);
+    }
+
+    public Double getAverage(int id) {
+        return professorCoreService.getAverage(id);
     }
 
     @Override

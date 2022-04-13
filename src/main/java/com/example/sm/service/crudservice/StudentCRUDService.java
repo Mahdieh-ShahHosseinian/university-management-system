@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StudentCRUDService implements ServiceInterface<StudentDTO>, CRUDServiceInterface<Student, StudentDTO> {
+public class StudentCRUDService implements ServiceInterface<StudentDTO, Integer>, CRUDServiceInterface<Student, StudentDTO> {
 
     private final StudentCoreService studentCoreService;
     private final PasswordEncoder passwordEncoder;
@@ -61,6 +61,14 @@ public class StudentCRUDService implements ServiceInterface<StudentDTO>, CRUDSer
     @Override
     public void delete(Integer id) {
         studentCoreService.delete(id);
+    }
+
+    public void addCourse(Integer id, Integer professorId, Integer courseId) {
+        studentCoreService.addCourse(id, professorId, courseId);
+    }
+
+    public Double getAverage(Integer id) {
+        return studentCoreService.getAverage(id);
     }
 
     @Override
