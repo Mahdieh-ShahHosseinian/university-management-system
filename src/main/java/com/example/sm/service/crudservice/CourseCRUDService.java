@@ -3,6 +3,7 @@ package com.example.sm.service.crudservice;
 import com.example.sm.dto.CourseDTO;
 import com.example.sm.model.Course;
 import com.example.sm.service.ServiceInterface;
+import com.example.sm.service.mapper.ModelMapper;
 import com.example.sm.service.coreservice.CourseCoreService;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CourseCRUDService implements ServiceInterface<CourseDTO>, CRUDServiceInterface<Course, CourseDTO> {
+public class CourseCRUDService implements ServiceInterface<CourseDTO, Integer>, CRUDServiceInterface<Course, CourseDTO> {
 
     private final CourseCoreService courseCoreService;
+    private final ModelMapper mapper;
 
-    public CourseCRUDService(CourseCoreService courseCoreService) {
+    public CourseCRUDService(CourseCoreService courseCoreService, ModelMapper mapper) {
         this.courseCoreService = courseCoreService;
+        this.mapper = mapper;
     }
 
     @Override
@@ -62,11 +65,11 @@ public class CourseCRUDService implements ServiceInterface<CourseDTO>, CRUDServi
 
     @Override
     public CourseDTO toDTO(Course course) {
-        return new CourseDTO(course.getId(), course.getName(), course.getUnit(), course.getFaculty());
+        return (CourseDTO) mapper.map(course, CourseDTO.class);
     }
 
     @Override
     public Course fromDTO(CourseDTO courseDTO) {
-        return new Course(courseDTO.getId(), courseDTO.getName(), courseDTO.getUnit(), courseDTO.getFaculty());
+        return (Course) mapper.map(courseDTO, Course.class);
     }
 }

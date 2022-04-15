@@ -32,11 +32,11 @@ public class ApplicationUser implements UserDetails {
 
     }
 
-    public ApplicationUser(String username, String password, String firstName, String lastName, Integer nationalId, Collection<? extends GrantedAuthority> grantedAuthorities) {
+    public ApplicationUser(String username, String password, String firstname, String lastname, Integer nationalId, Collection<? extends GrantedAuthority> grantedAuthorities) {
         this.username = username;
         this.password = password;
-        this.firstname = firstName;
-        this.lastname = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.nationalId = nationalId;
         this.grantedAuthorities = grantedAuthorities;
     }

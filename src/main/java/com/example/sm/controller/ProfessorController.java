@@ -1,10 +1,13 @@
 package com.example.sm.controller;
 
+import com.example.sm.dto.CourseDTO;
 import com.example.sm.dto.ProfessorDTO;
+import com.example.sm.dto.StudentDTO;
 import com.example.sm.service.crudservice.ProfessorCRUDService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.example.sm.controller.APIController.BASE_URI;
 
@@ -52,5 +55,30 @@ public class ProfessorController implements ControllerInterface<ProfessorDTO> {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id) {
         professorCRUDService.delete(id);
+    }
+
+    @PutMapping("{id}/addCourse")
+    public void addCourse(@PathVariable("id") int id, @RequestParam("courseId") int cId) {
+        professorCRUDService.addCourse(id, cId);
+    }
+
+    @GetMapping("/{id}/courses")
+    public Set<CourseDTO> getCourses(@PathVariable("id") int id) {
+        return professorCRUDService.getCourses(id);
+    }
+
+    @GetMapping("/{id}/students")
+    public Set<StudentDTO> getStudents(@PathVariable("id") int id) {
+        return professorCRUDService.getStudents(id);
+    }
+
+    @PutMapping("/{id}/studentGrade")
+    public void setGrade(@PathVariable("id") int id, @RequestParam("sId") int studentId, @RequestParam("cId") int courseId, @RequestParam double grade) {
+        professorCRUDService.setGrade(id, studentId, courseId, grade);
+    }
+
+    @GetMapping("/{id}/studentsAverage")
+    public double getAverage(@PathVariable("id") int id) {
+        return professorCRUDService.getAverage(id);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.sm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -19,14 +21,16 @@ public class Professor extends ApplicationUser {
     @ManyToOne
     private Faculty faculty;
 
-    @ManyToMany
+    // TODO change fetch type to lazy then solve addCourse() error on Service
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Course> courses;
 
     public Professor() {
     }
 
-    public Professor(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer personnelId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId, PROFESSOR.getGrantedAuthorities());
+    public Professor(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer personnelId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId, PROFESSOR.getGrantedAuthorities());
         this.id = id;
         this.personnelId = personnelId;
         this.faculty = faculty;

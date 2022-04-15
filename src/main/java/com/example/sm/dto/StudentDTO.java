@@ -2,6 +2,8 @@ package com.example.sm.dto;
 
 import com.example.sm.model.Faculty;
 
+import java.util.Objects;
+
 public class StudentDTO extends ApplicationUserDTO<StudentDTO> {
 
     private Integer id;
@@ -12,8 +14,8 @@ public class StudentDTO extends ApplicationUserDTO<StudentDTO> {
 
     }
 
-    public StudentDTO(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer studentId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId);
+    public StudentDTO(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer studentId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId);
         this.id = id;
         this.studentId = studentId;
         this.faculty = faculty;
@@ -41,5 +43,14 @@ public class StudentDTO extends ApplicationUserDTO<StudentDTO> {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        StudentDTO studentDTO = null;
+        if (obj instanceof StudentDTO) studentDTO = (StudentDTO) obj;
+        assert studentDTO != null;
+        return Objects.equals(id, studentDTO.getId());
     }
 }

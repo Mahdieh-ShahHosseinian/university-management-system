@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CourseCoreService implements ServiceInterface<Course> {
+public class CourseCoreService implements ServiceInterface<Course, Integer> {
 
     private final CourseRepository repository;
 

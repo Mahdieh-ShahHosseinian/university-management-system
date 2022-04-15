@@ -1,6 +1,9 @@
 package com.example.sm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.example.sm.model.ApplicationUserRole.STUDENT;
@@ -18,6 +21,7 @@ public class Student extends ApplicationUser {
     @ManyToOne
     private Faculty faculty;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "studentCourseId.student", fetch = FetchType.EAGER)
     private Set<StudentCourse> studentCourses;
 
@@ -25,8 +29,8 @@ public class Student extends ApplicationUser {
 
     }
 
-    public Student(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer studentId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId, STUDENT.getGrantedAuthorities());
+    public Student(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer studentId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId, STUDENT.getGrantedAuthorities());
         this.id = id;
         this.studentId = studentId;
         this.faculty = faculty;
@@ -62,5 +66,14 @@ public class Student extends ApplicationUser {
 
     public void setStudentCourses(Set<StudentCourse> studentCourses) {
         this.studentCourses = studentCourses;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        Student student = null;
+        if (obj instanceof Student) student = (Student) obj;
+        assert student != null;
+        return Objects.equals(studentId, student.getStudentId());
     }
 }

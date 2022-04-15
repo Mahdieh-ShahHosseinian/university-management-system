@@ -1,5 +1,7 @@
 package com.example.sm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -8,19 +10,22 @@ import java.util.Set;
 public class Faculty {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private Set<Professor> professors;
 
-    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private Set<Student> students;
 
-    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private Set<Course> courses;
 
     public Faculty() {
@@ -74,6 +79,7 @@ public class Faculty {
 
     @Override
     public boolean equals(Object obj) {
+
         Faculty faculty = null;
         if (obj instanceof Faculty) faculty = (Faculty) obj;
         assert faculty != null;

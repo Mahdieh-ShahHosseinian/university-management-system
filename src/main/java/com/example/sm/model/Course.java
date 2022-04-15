@@ -1,5 +1,7 @@
 package com.example.sm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -8,7 +10,7 @@ import java.util.Set;
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true)
@@ -20,10 +22,12 @@ public class Course {
     @ManyToOne
     private Faculty faculty;
 
-    @ManyToMany(mappedBy = "courses")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     private Set<Professor> professors;
 
-    @OneToMany(mappedBy = "studentCourseId.course", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "studentCourseId.course", fetch = FetchType.LAZY)
     private Set<StudentCourse> studentCourses;
 
     public Course() {

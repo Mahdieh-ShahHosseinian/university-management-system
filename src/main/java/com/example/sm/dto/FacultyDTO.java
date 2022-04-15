@@ -1,6 +1,9 @@
 package com.example.sm.dto;
 
+import com.example.sm.model.Faculty;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Objects;
 
 public class FacultyDTO extends RepresentationModel<FacultyDTO> {
 
@@ -30,5 +33,14 @@ public class FacultyDTO extends RepresentationModel<FacultyDTO> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        FacultyDTO facultyDTO = null;
+        if (obj instanceof FacultyDTO) facultyDTO = (FacultyDTO) obj;
+        assert facultyDTO != null;
+        return Objects.equals(id, facultyDTO.getId());
     }
 }

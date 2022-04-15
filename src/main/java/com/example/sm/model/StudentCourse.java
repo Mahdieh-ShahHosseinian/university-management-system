@@ -15,11 +15,8 @@ public class StudentCourse {
 
     }
 
-    public StudentCourse(Professor professor, Course course, Student student) {
-        assert false;
-        studentCourseId.setProfessor(professor);
-        studentCourseId.setCourse(course);
-        studentCourseId.setStudent(student);
+    public StudentCourse(Student student, Professor professor, Course course) {
+        studentCourseId = new StudentCourseId(student, professor, course);
     }
 
     public StudentCourseId getStudentCourseId() {
@@ -36,6 +33,18 @@ public class StudentCourse {
 
     public void setGrade(Double grade) {
         this.grade = grade;
+    }
+
+    public Student getStudent() {
+        return studentCourseId.getStudent();
+    }
+
+    public Professor getProfessor() {
+        return studentCourseId.getProfessor();
+    }
+
+    public Course getCourse() {
+        return studentCourseId.getCourse();
     }
 
     @Override

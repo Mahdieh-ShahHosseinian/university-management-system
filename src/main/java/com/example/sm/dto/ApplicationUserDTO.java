@@ -6,8 +6,8 @@ public class ApplicationUserDTO<T extends RepresentationModel<? extends T>> exte
 
     private String username;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private Integer nationalId;
     private byte[] profilePicture;
 
@@ -15,11 +15,11 @@ public class ApplicationUserDTO<T extends RepresentationModel<? extends T>> exte
 
     }
 
-    public ApplicationUserDTO(String username, String password, String firstName, String lastName, Integer nationalId) {
+    public ApplicationUserDTO(String username, String password, String firstname, String lastname, Integer nationalId) {
         this.username = username;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.nationalId = nationalId;
     }
 
@@ -39,20 +39,20 @@ public class ApplicationUserDTO<T extends RepresentationModel<? extends T>> exte
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public Integer getNationalId() {

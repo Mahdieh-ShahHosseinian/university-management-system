@@ -2,7 +2,6 @@ package com.example.sm.model;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
 
 @Embeddable
@@ -11,19 +10,29 @@ public class StudentCourseId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ManyToOne
+    private Student student;
+
+    @ManyToOne
     private Professor professor;
 
     @ManyToOne
     private Course course;
 
-    @ManyToOne
-    private Student student;
-
     public StudentCourseId() {
 
     }
 
-    public StudentCourseId(Student student) {
+    public StudentCourseId(Student student, Professor professor, Course course) {
+        this.student = student;
+        this.professor = professor;
+        this.course = course;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
         this.student = student;
     }
 
@@ -41,14 +50,6 @@ public class StudentCourseId implements Serializable {
 
     public void setCourse(Course course) {
         this.course = course;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 
     @Override

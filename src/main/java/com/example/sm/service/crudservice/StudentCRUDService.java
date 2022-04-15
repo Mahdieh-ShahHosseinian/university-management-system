@@ -3,6 +3,7 @@ package com.example.sm.service.crudservice;
 import com.example.sm.dto.StudentDTO;
 import com.example.sm.model.Student;
 import com.example.sm.service.ServiceInterface;
+import com.example.sm.service.mapper.ModelMapper;
 import com.example.sm.service.coreservice.StudentCoreService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,14 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StudentCRUDService implements ServiceInterface<StudentDTO>, CRUDServiceInterface<Student, StudentDTO> {
+public class StudentCRUDService implements ServiceInterface<StudentDTO, Integer>, CRUDServiceInterface<Student, StudentDTO> {
 
     private final StudentCoreService studentCoreService;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper mapper;
 
-    public StudentCRUDService(StudentCoreService studentCoreService, PasswordEncoder passwordEncoder) {
+    public StudentCRUDService(StudentCoreService studentCoreService, PasswordEncoder passwordEncoder, ModelMapper mapper) {
         this.studentCoreService = studentCoreService;
         this.passwordEncoder = passwordEncoder;
+        this.mapper = mapper;
     }
 
     @Override
@@ -63,21 +66,25 @@ public class StudentCRUDService implements ServiceInterface<StudentDTO>, CRUDSer
         studentCoreService.delete(id);
     }
 
+    public void addCourse(Integer id, Integer professorId, Integer courseId) {
+        studentCoreService.addCourse(id, professorId, courseId);
+    }
+
+    public Double getAverage(Integer id) {
+        return studentCoreService.getAverage(id);
+    }
+
     @Override
     public StudentDTO toDTO(Student student) {
-
         String password = "*******";
-        return new StudentDTO(
-                student.getId(), student.getUsername(), password, student.getFirstname(), student.getLastname(),
-                student.getNationalId(), student.getStudentId(), student.getFaculty());
+        student.setPassword(password);
+        return (StudentDTO) mapper.map(student, StudentDTO.class);
     }
 
     @Override
     public Student fromDTO(StudentDTO studentDTO) {
-
         String encodedPass = passwordEncoder.encode(studentDTO.getPassword());
-        return new Student(
-                studentDTO.getId(), studentDTO.getUsername(), encodedPass, studentDTO.getFirstName(), studentDTO.getLastName(),
-                studentDTO.getNationalId(), studentDTO.getStudentId(), studentDTO.getFaculty());
+        studentDTO.setPassword(encodedPass);
+        return (Student) mapper.map(studentDTO, Student.class);
     }
 }

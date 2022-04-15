@@ -2,7 +2,7 @@ package com.example.sm.service;
 
 import java.util.List;
 
-public interface ServiceInterface<T> {
+public interface ServiceInterface<T, ID> {
 
     // C R U D operation
     T save(T t);
@@ -11,9 +11,9 @@ public interface ServiceInterface<T> {
 
     List<T> getAllPaginated(int page, int size);
 
-    T get(Integer id);
+    T get(ID id);
 
-    T update(T t, Integer id);
+    T update(T t, ID id);
 
-    void delete(Integer id);
+    void delete(ID id);
 }
