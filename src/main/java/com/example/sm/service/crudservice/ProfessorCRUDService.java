@@ -7,8 +7,8 @@ import com.example.sm.model.Course;
 import com.example.sm.model.Professor;
 import com.example.sm.model.Student;
 import com.example.sm.service.ServiceInterface;
-import com.example.sm.service.mapper.ModelMapper;
 import com.example.sm.service.coreservice.ProfessorCoreService;
+import com.example.sm.service.mapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

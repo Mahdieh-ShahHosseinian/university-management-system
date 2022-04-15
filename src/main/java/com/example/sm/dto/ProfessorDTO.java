@@ -1,6 +1,9 @@
 package com.example.sm.dto;
 
 import com.example.sm.model.Faculty;
+import com.example.sm.model.Professor;
+
+import java.util.Objects;
 
 import java.util.Objects;
 
