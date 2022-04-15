@@ -8,6 +8,7 @@ import com.example.sm.model.Professor;
 import com.example.sm.model.Student;
 import com.example.sm.service.ServiceInterface;
 import com.example.sm.service.coreservice.ProfessorCoreService;
+import com.example.sm.service.mapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,14 @@ public class ProfessorCRUDService implements ServiceInterface<ProfessorDTO, Inte
     private final PasswordEncoder passwordEncoder;
     private final CourseCRUDService courseCRUDService;
     private final StudentCRUDService studentCRUDService;
+    private final ModelMapper mapper;
 
-    public ProfessorCRUDService(ProfessorCoreService professorCoreService, PasswordEncoder passwordEncoder, CourseCRUDService courseCRUDService, StudentCRUDService studentCRUDService) {
+    public ProfessorCRUDService(ProfessorCoreService professorCoreService, PasswordEncoder passwordEncoder, CourseCRUDService courseCRUDService, StudentCRUDService studentCRUDService, ModelMapper mapper) {
         this.professorCoreService = professorCoreService;
         this.passwordEncoder = passwordEncoder;
         this.courseCRUDService = courseCRUDService;
         this.studentCRUDService = studentCRUDService;
+        this.mapper = mapper;
     }
 
     @Override
@@ -107,19 +110,15 @@ public class ProfessorCRUDService implements ServiceInterface<ProfessorDTO, Inte
 
     @Override
     public ProfessorDTO toDTO(Professor professor) {
-
         String password = "*******";
-        return new ProfessorDTO(
-                professor.getId(), professor.getUsername(), password, professor.getFirstname(), professor.getLastname(),
-                professor.getNationalId(), professor.getPersonnelId(), professor.getFaculty());
+        professor.setPassword(password);
+        return mapper.map(professor, ProfessorDTO.class);
     }
 
     @Override
     public Professor fromDTO(ProfessorDTO professorDTO) {
-
         String encodedPass = passwordEncoder.encode(professorDTO.getPassword());
-        return new Professor(
-                professorDTO.getId(), professorDTO.getUsername(), encodedPass, professorDTO.getFirstName(), professorDTO.getLastName(),
-                professorDTO.getNationalId(), professorDTO.getPersonnelId(), professorDTO.getFaculty());
+        professorDTO.setPassword(encodedPass);
+        return mapper.map(professorDTO, Professor.class);
     }
 }

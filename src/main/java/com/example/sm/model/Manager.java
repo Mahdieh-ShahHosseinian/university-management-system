@@ -22,8 +22,8 @@ public class Manager extends ApplicationUser {
 
     }
 
-    public Manager(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer personnelId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId, MANAGER.getGrantedAuthorities());
+    public Manager(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer personnelId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId, MANAGER.getGrantedAuthorities());
         this.id = id;
         this.personnelId = personnelId;
         this.faculty = faculty;

@@ -94,8 +94,8 @@ public class ProfessorCoreService implements ServiceInterface<Professor, Integer
         return students;
     }
 
-    // TODO
     public void setGrade(int id, int studentId, int courseId, double grade) {
+        studentCourseCoreService.update(studentId, id, courseId, grade);
     }
 
     public Double getAverage(int id) {

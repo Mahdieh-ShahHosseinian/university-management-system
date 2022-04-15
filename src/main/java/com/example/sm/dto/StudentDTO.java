@@ -14,8 +14,8 @@ public class StudentDTO extends ApplicationUserDTO<StudentDTO> {
 
     }
 
-    public StudentDTO(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer studentId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId);
+    public StudentDTO(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer studentId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId);
         this.id = id;
         this.studentId = studentId;
         this.faculty = faculty;

@@ -5,6 +5,8 @@ import com.example.sm.model.Professor;
 
 import java.util.Objects;
 
+import java.util.Objects;
+
 public class ProfessorDTO extends ApplicationUserDTO<ProfessorDTO> {
 
     private Integer id;
@@ -15,8 +17,8 @@ public class ProfessorDTO extends ApplicationUserDTO<ProfessorDTO> {
 
     }
 
-    public ProfessorDTO(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer personnelId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId);
+    public ProfessorDTO(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer personnelId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId);
         this.id = id;
         this.personnelId = personnelId;
         this.faculty = faculty;

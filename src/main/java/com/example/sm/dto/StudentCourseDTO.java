@@ -1,6 +1,5 @@
 package com.example.sm.dto;
 
-import com.example.sm.model.StudentCourse;
 import com.example.sm.model.StudentCourseId;
 
 public class StudentCourseDTO {

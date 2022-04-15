@@ -62,6 +62,14 @@ public class StudentCourseCoreService implements ServiceInterface<StudentCourse,
         return save(sc);
     }
 
+    public StudentCourse update(Integer studentId, Integer professorId, Integer courseId, Double grade) {
+
+        StudentCourse sc = repository.findByStudentCourseIdStudentAndStudentCourseIdProfessorAndStudentCourseIdCourse(
+                studentCoreService.get(studentId), professorCoreService.get(professorId), courseCoreService.get(courseId));
+        sc.setGrade(grade);
+        return repository.save(sc);
+    }
+
     @Override
     public void delete(StudentCourseId id) {
         repository.deleteByStudentCourseId(id);

@@ -3,6 +3,7 @@ package com.example.sm.service.crudservice;
 import com.example.sm.dto.FacultyDTO;
 import com.example.sm.model.Faculty;
 import com.example.sm.service.ServiceInterface;
+import com.example.sm.service.mapper.ModelMapper;
 import com.example.sm.service.coreservice.FacultyCoreService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class FacultyCRUDService implements ServiceInterface<FacultyDTO, Integer>, CRUDServiceInterface<Faculty, FacultyDTO> {
 
     private final FacultyCoreService facultyCoreService;
+    private final ModelMapper mapper;
 
-    public FacultyCRUDService(FacultyCoreService facultyCoreService) {
+    public FacultyCRUDService(FacultyCoreService facultyCoreService, ModelMapper mapper) {
         this.facultyCoreService = facultyCoreService;
+        this.mapper = mapper;
     }
 
     @Override
@@ -62,11 +65,11 @@ public class FacultyCRUDService implements ServiceInterface<FacultyDTO, Integer>
 
     @Override
     public FacultyDTO toDTO(Faculty faculty) {
-        return new FacultyDTO(faculty.getId(), faculty.getName());
+        return mapper.map(faculty, FacultyDTO.class);
     }
 
     @Override
     public Faculty fromDTO(FacultyDTO facultyDTO) {
-        return new Faculty(facultyDTO.getId(), facultyDTO.getName());
+        return mapper.map(facultyDTO, Faculty.class);
     }
 }

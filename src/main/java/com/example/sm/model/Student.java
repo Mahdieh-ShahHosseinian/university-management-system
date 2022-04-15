@@ -29,8 +29,8 @@ public class Student extends ApplicationUser {
 
     }
 
-    public Student(Integer id, String username, String password, String firstName, String lastName, Integer nationalId, Integer studentId, Faculty faculty) {
-        super(username, password, firstName, lastName, nationalId, STUDENT.getGrantedAuthorities());
+    public Student(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer studentId, Faculty faculty) {
+        super(username, password, firstname, lastname, nationalId, STUDENT.getGrantedAuthorities());
         this.id = id;
         this.studentId = studentId;
         this.faculty = faculty;

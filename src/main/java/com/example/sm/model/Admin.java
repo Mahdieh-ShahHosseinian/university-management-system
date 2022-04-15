@@ -18,8 +18,8 @@ public class Admin extends ApplicationUser {
 
     }
 
-    public Admin(Integer id, String username, String password, String firstName, String lastName, Integer nationalId) {
-        super(username, password, firstName, lastName, nationalId, ADMIN.getGrantedAuthorities());
+    public Admin(Integer id, String username, String password, String firstname, String lastname, Integer nationalId) {
+        super(username, password, firstname, lastname, nationalId, ADMIN.getGrantedAuthorities());
         this.id = id;
     }
 
