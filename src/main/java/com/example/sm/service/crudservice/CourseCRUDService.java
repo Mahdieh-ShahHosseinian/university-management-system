@@ -65,11 +65,11 @@ public class CourseCRUDService implements ServiceInterface<CourseDTO, Integer>, 
 
     @Override
     public CourseDTO toDTO(Course course) {
-        return (CourseDTO) mapper.map(course, CourseDTO.class);
+        return mapper.map(course, CourseDTO.class);
     }
 
     @Override
     public Course fromDTO(CourseDTO courseDTO) {
-        return (Course) mapper.map(courseDTO, Course.class);
+        return mapper.map(courseDTO, Course.class);
     }
 }

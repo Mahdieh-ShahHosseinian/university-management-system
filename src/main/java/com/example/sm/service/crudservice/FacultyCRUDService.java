@@ -65,11 +65,11 @@ public class FacultyCRUDService implements ServiceInterface<FacultyDTO, Integer>
 
     @Override
     public FacultyDTO toDTO(Faculty faculty) {
-        return (FacultyDTO) mapper.map(faculty, FacultyDTO.class);
+        return mapper.map(faculty, FacultyDTO.class);
     }
 
     @Override
     public Faculty fromDTO(FacultyDTO facultyDTO) {
-        return (Faculty) mapper.map(facultyDTO, Faculty.class);
+        return mapper.map(facultyDTO, Faculty.class);
     }
 }

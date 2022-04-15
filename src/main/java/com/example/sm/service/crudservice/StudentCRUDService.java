@@ -78,13 +78,13 @@ public class StudentCRUDService implements ServiceInterface<StudentDTO, Integer>
     public StudentDTO toDTO(Student student) {
         String password = "*******";
         student.setPassword(password);
-        return (StudentDTO) mapper.map(student, StudentDTO.class);
+        return mapper.map(student, StudentDTO.class);
     }
 
     @Override
     public Student fromDTO(StudentDTO studentDTO) {
         String encodedPass = passwordEncoder.encode(studentDTO.getPassword());
         studentDTO.setPassword(encodedPass);
-        return (Student) mapper.map(studentDTO, Student.class);
+        return mapper.map(studentDTO, Student.class);
     }
 }

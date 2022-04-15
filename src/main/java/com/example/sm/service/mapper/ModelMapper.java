@@ -7,7 +7,7 @@ import java.lang.reflect.*;
 @Component
 public class ModelMapper {
 
-    public Object map(Object source, Type destinationType) {
+    public <D> D map(Object source, Type destinationType) {
 
         Object target = null;
         try {
@@ -44,6 +44,7 @@ public class ModelMapper {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        return target;
+
+        return (D) target;
     }
 }

@@ -112,13 +112,13 @@ public class ProfessorCRUDService implements ServiceInterface<ProfessorDTO, Inte
     public ProfessorDTO toDTO(Professor professor) {
         String password = "*******";
         professor.setPassword(password);
-        return (ProfessorDTO) mapper.map(professor, ProfessorDTO.class);
+        return mapper.map(professor, ProfessorDTO.class);
     }
 
     @Override
     public Professor fromDTO(ProfessorDTO professorDTO) {
         String encodedPass = passwordEncoder.encode(professorDTO.getPassword());
         professorDTO.setPassword(encodedPass);
-        return (Professor) mapper.map(professorDTO, Professor.class);
+        return mapper.map(professorDTO, Professor.class);
     }
 }
