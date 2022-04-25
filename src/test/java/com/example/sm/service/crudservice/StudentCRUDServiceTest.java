@@ -12,13 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.criteria.CriteriaBuilder;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StudentCRUDServiceTest {
@@ -96,8 +93,8 @@ class StudentCRUDServiceTest {
         StudentDTO studentDTO = crudService.toDTO(student);
         assertThat(studentDTO.getId()).isEqualTo(student.getId());
         assertThat(studentDTO.getUsername()).isEqualTo(student.getUsername());
-        assertThat(studentDTO.getFirstName()).isEqualTo(student.getFirstname());
-        assertThat(studentDTO.getLastName()).isEqualTo(student.getLastname());
+        assertThat(studentDTO.getFirstname()).isEqualTo(student.getFirstname());
+        assertThat(studentDTO.getLastname()).isEqualTo(student.getLastname());
         assertThat(studentDTO.getNationalId()).isEqualTo(student.getNationalId());
         assertThat(studentDTO.getStudentId()).isEqualTo(student.getStudentId());
     }
@@ -109,8 +106,8 @@ class StudentCRUDServiceTest {
         Student student = crudService.fromDTO(studentDTO);
         assertThat(student.getId()).isEqualTo(studentDTO.getId());
         assertThat(student.getUsername()).isEqualTo(studentDTO.getUsername());
-        assertThat(student.getFirstname()).isEqualTo(studentDTO.getFirstName());
-        assertThat(student.getLastname()).isEqualTo(studentDTO.getLastName());
+        assertThat(student.getFirstname()).isEqualTo(studentDTO.getFirstname());
+        assertThat(student.getLastname()).isEqualTo(studentDTO.getLastname());
         assertThat(student.getNationalId()).isEqualTo(studentDTO.getNationalId());
         assertThat(student.getStudentId()).isEqualTo(studentDTO.getStudentId());
     }

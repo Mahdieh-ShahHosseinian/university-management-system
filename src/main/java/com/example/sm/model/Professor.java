@@ -21,12 +21,13 @@ public class Professor extends ApplicationUser {
     @ManyToOne
     private Faculty faculty;
 
-    // TODO change fetch type to lazy then solve addCourse() error on Service
+    // TODO change fetch type to lazy then solve addCourse() error on Service => @Transactional(readOnly = true) is the solution => solution DID NOT WORK
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Course> courses;
 
     public Professor() {
+        setGrantedAuthorities(PROFESSOR.getGrantedAuthorities());
     }
 
     public Professor(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer personnelId, Faculty faculty) {

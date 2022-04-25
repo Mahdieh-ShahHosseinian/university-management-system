@@ -1,17 +1,18 @@
 package com.example.sm.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.example.sm.model.ApplicationUserRole.ADMIN;
+import static com.example.sm.model.ApplicationUserRole.MANAGER;
+
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -27,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(daoAuthenticationProvider());
+        auth.authenticationProvider(CustomAuthenticationProvider());
     }
 
     /**
@@ -37,16 +38,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable()
+//                .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/ums.com/api/v6/faculties/**", "/ums.com/api/v6/courses/**").hasAnyRole(MANAGER.name(), ADMIN.name())
+                .antMatchers("/ums.com/api/v6/**").hasRole(ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    public AbstractUserDetailsAuthenticationProvider CustomAuthenticationProvider() {
+        CustomAuthenticationProvider provider = new CustomAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsService);
         return provider;

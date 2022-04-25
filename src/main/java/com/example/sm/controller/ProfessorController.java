@@ -12,7 +12,7 @@ import java.util.Set;
 import static com.example.sm.controller.APIController.BASE_URI;
 
 @RestController
-@RequestMapping(BASE_URI + "professors")
+@RequestMapping(BASE_URI + "/professors")
 public class ProfessorController implements ControllerInterface<ProfessorDTO> {
 
     private final ProfessorCRUDService professorCRUDService;
