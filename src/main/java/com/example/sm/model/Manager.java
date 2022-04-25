@@ -19,7 +19,7 @@ public class Manager extends ApplicationUser {
     private Faculty faculty;
 
     public Manager() {
-
+        setGrantedAuthorities(MANAGER.getGrantedAuthorities());
     }
 
     public Manager(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer personnelId, Faculty faculty) {

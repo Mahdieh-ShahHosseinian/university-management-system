@@ -4,7 +4,6 @@ import com.example.sm.dao.StudentRepository;
 import com.example.sm.model.Student;
 import com.example.sm.model.StudentCourse;
 import com.example.sm.service.ServiceInterface;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

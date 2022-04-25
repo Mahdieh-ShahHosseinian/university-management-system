@@ -9,7 +9,7 @@ import java.util.List;
 import static com.example.sm.controller.APIController.BASE_URI;
 
 @RestController
-@RequestMapping(BASE_URI + "courses")
+@RequestMapping(BASE_URI + "/courses")
 public class CourseController implements ControllerInterface<CourseDTO> {
 
     private final CourseCRUDService courseCRUDService;

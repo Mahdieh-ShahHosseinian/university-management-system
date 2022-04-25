@@ -15,7 +15,7 @@ public class Admin extends ApplicationUser {
     private Integer id;
 
     public Admin() {
-
+        setGrantedAuthorities(ADMIN.getGrantedAuthorities());
     }
 
     public Admin(Integer id, String username, String password, String firstname, String lastname, Integer nationalId) {

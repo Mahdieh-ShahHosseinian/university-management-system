@@ -11,7 +11,7 @@ import static com.example.sm.model.ApplicationUserPermission.*;
 public enum ApplicationUserRole {
 
     ADMIN(EnumSet.allOf(ApplicationUserPermission.class)),
-    MANAGER(EnumSet.of(FACULTY_READ, FACULTY_WRITE, PROFESSOR_READ, PROFESSOR_WRITE, STUDENT_READ, STUDENT_WRITE, COURSE_READ, COURSE_WRITE)),
+    MANAGER(EnumSet.of(FACULTY_READ, FACULTY_WRITE, COURSE_READ, COURSE_WRITE)),
     PROFESSOR(EnumSet.of(PROFESSOR_READ, COURSE_WRITE)),
     STUDENT(EnumSet.of(STUDENT_READ, COURSE_READ));
 

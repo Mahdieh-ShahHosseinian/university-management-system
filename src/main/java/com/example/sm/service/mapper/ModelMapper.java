@@ -30,6 +30,7 @@ public class ModelMapper {
                         Method method = sourceClass.getMethod(methodName, null);
                         Object propertyValue = method.invoke(source, null);
 
+                        // or instead use setter method - better approach
                         Field field;
                         try {
                             field = targetClass.getDeclaredField(propertyName);

@@ -26,7 +26,7 @@ public class Student extends ApplicationUser {
     private Set<StudentCourse> studentCourses;
 
     public Student() {
-
+        setGrantedAuthorities(STUDENT.getGrantedAuthorities());
     }
 
     public Student(Integer id, String username, String password, String firstname, String lastname, Integer nationalId, Integer studentId, Faculty faculty) {
